@@ -24,7 +24,7 @@ export default connectDB;*/
 
 
 mongoose.set("strictQuery",false);
-const connectDB = async (req, res) => {
+const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL,{
         serverSelectionTimeoutMS: 5000,

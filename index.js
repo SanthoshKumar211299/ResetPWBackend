@@ -11,13 +11,12 @@ const app = express();
 const port =process.env.PORT || 8000;
 //middle ware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
+const
+  corsOption={
+    origin: true,
     credentials: true,
-  })
-);
-connectDB();
+  };
+app.use(cors(corsOption));
 //routes
 app.use("/api", userrouter);
 
@@ -27,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 //Port
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
+  connectDB();
   console.log("App is running on");
 });
