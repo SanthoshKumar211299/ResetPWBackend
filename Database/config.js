@@ -27,7 +27,6 @@ mongoose.set("strictQuery",false);
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL,{
-        serverSelectionTimeoutMS: 5000,
      })
      console.log('Mongoose connected successfully');
   } catch (error) {
