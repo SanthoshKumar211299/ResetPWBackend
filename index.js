@@ -13,7 +13,7 @@ const port =process.env.PORT || 8000;
 app.use(express.json());
 const
   corsOption={
-    origin: true,
+    origin:true,
     credentials: true,
   };
 app.use(cors(corsOption));
