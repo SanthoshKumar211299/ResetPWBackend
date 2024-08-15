@@ -1,32 +1,45 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./Database/config.js";
-import userrouter from './Routers/userRouter.js'
+import authRoute from './Routers/AuthRouters.js'
+import mongoose from "mongoose";
+import cookieParser from "cookieparser";
 
 
-dotenv.config();
-
-const app = express();
+dotenv.config()
+const app =express()
 const port =process.env.PORT || 8000;
-//middle ware
-app.use(express.json());
-const
-  corsOption={
+const corsOption = {
     origin:true,
-    credentials: true,
-  };
+    credentials:true,
+}
+
+//database connection
+mongoose.set("strictQuery",false);
+const connect= async()=>{
+    try{
+         await mongoose.connect(process.env.MONGO_URI,{
+            serverSelectionTimeoutMS: 5000,
+         })
+         console.log('Mongoose connected successfully');
+         
+    }catch(err){
+       console.log('MongoDB Connection failed');
+       
+    }
+}
+
+
+//middleware
+app.use(express.json());
 app.use(cors(corsOption));
-//routes
-app.use("/api", userrouter);
+app.use(cookieParser());
 
 
-app.get("/", (req, res) => {
-  res.status(200).send("API running Successfully");
-});
+app.use('/api/v1/auth',authRoute)
 
-//Port
-app.listen(port, () => {
-  connectDB();
-  console.log("App is running on");
-});
+app.listen(port, ()=>{
+    connect()
+    console.log('server listening on port',port);
+    
+})
